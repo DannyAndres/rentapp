@@ -26,7 +26,7 @@ jobs:
           eslint: true
           prettier: true
           eslint_args: '--config .eslintrc.json'
-          eslint_extensions: ts
+          eslint_extensions: ts,tsx
       - name: Running tests
         run: yarn run test
       - name: Build project

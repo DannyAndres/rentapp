@@ -24,3 +24,5 @@ yarn-error.log*
 
 src/react-app-env.d.ts
 render-html.js
+jest.setup.js
+public/*
