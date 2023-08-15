@@ -6,8 +6,12 @@ import {
   Outlet,
   RouterProvider,
 } from 'react-router-dom';
-import Home from 'pages/Home';
+
 import Header from 'components/Header';
+
+import Home from 'pages/Home';
+import LogIn from 'pages/LogIn';
+import SignUp from 'pages/SignUp';
 
 import { useCustomSelector } from 'hooks/redux';
 
@@ -23,19 +27,22 @@ const Root: React.FC = () => {
       } text-foreground bg-background w-full min-h-[100vh]`}
     >
       <Header />
-      <Outlet />
+      <div className="w-full flex justify-center items-start">
+        <div className="w-full max-w-[1024px]">
+          <Outlet />
+        </div>
+      </div>
     </main>
   );
 };
 
 const AppRouter: React.FC = () => {
-  // second route
-  // <Route element={<Login/>}/>
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<Home />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Route>
     )
   );

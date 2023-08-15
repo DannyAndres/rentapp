@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^29.5.3",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -28,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "test": "react-scripts test",
+    "test": "jest --detectOpenHandles",
+    "test:cache": "jest --detectOpenHandles --clearCache",
+    "test:watch": "jest --watch --detectOpenHandles",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -51,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/redux-mock-store": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^9.0.0",
@@ -62,7 +65,11 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^29.6.2",
+    "jest-environment-jsdom": "^29.6.2",
     "prettier": "^3.0.1",
-    "tailwindcss": "^3.3.3"
+    "redux-mock-store": "^1.5.4",
+    "tailwindcss": "^3.3.3",
+    "ts-jest": "^29.1.1"
   }
 }
