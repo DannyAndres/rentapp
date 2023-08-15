@@ -41,6 +41,21 @@ export const Button: React.FC<NextUIProviderProps> = ({
   );
 };
 
+export const Input: React.FC<NextUIProviderProps> = ({
+  children,
+  ...props
+}) => {
+  return React.createElement(
+    'div',
+    {
+      onClick: props.onClick,
+      onChange: props.onChange,
+      'data-testid': props['data-testid'],
+    },
+    children
+  );
+};
+
 export const Switch: React.FC<NextUIProviderProps> = ({
   children,
   ...props

@@ -14,7 +14,7 @@ interface EyeFilledIconProps {
   className: string;
 }
 
-const EyeSlashFilledIcon: React.FC<EyeSlashFilledIconProps> = (
+export const EyeSlashFilledIcon: React.FC<EyeSlashFilledIconProps> = (
   props: EyeSlashFilledIconProps
 ) => (
   <svg
@@ -50,7 +50,7 @@ const EyeSlashFilledIcon: React.FC<EyeSlashFilledIconProps> = (
   </svg>
 );
 
-const EyeFilledIcon: React.FC<EyeFilledIconProps> = (
+export const EyeFilledIcon: React.FC<EyeFilledIconProps> = (
   props: EyeFilledIconProps
 ) => (
   <svg
@@ -98,10 +98,6 @@ const LogIn: React.FC = () => {
 
   const [isVisible, setIsVisible] = React.useState(false);
 
-  const toggleVisibility = (): void => {
-    setIsVisible(!isVisible);
-  };
-
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -121,7 +117,9 @@ const LogIn: React.FC = () => {
               <button
                 className="focus:outline-none"
                 type="button"
-                onClick={toggleVisibility}
+                onClick={() => {
+                  setIsVisible(!isVisible);
+                }}
               >
                 {isVisible ? (
                   <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />

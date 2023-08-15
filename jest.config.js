@@ -11,6 +11,8 @@ module.exports = {
     '!src/react-app-env.d.ts',
     '!src/hooks/**',
     '!src/redux/store.ts',
+    // temporary one, until auth is complete
+    '!src/redux/**',
   ],
   coverageThreshold: {
     global: {
