@@ -1,8 +1,7 @@
 import React from 'react';
 
-// import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
-// import { login } from 'redux/slices/auth';
-// import { setThemeMode } from 'redux/slices/settings';
+import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
+import { login } from 'redux/slices/auth';
 
 import { Input, Button } from '@nextui-org/react';
 
@@ -75,26 +74,21 @@ export const EyeFilledIcon: React.FC<EyeFilledIconProps> = (
 );
 
 const LogIn: React.FC = () => {
-  // const {
-  //   auth: { accessToken, isLoading },
-  //   // settings: { themeMode },
-  // } = useCustomSelector((state) => state);
-  // const dispatch = useCustomDispatch();
+  const {
+    auth: { accessToken, isLoading },
+  } = useCustomSelector((state) => state);
+  const dispatch = useCustomDispatch();
 
-  // console.log(accessToken);
+  console.log(accessToken);
 
-  // const handleLogin = (): void => {
-  //   dispatch(
-  //     login({
-  //       email: 'eve.holt@reqres.in',
-  //       password: 'cityslicka',
-  //     })
-  //   );
-  // };
-
-  // const handleChangeTheme = (): void => {
-  //   dispatch(setThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
-  // };
+  const handleLogin = (): void => {
+    dispatch(
+      login({
+        email: 'eve.holt@reqres.in',
+        password: 'cityslicka',
+      })
+    );
+  };
 
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -135,6 +129,9 @@ const LogIn: React.FC = () => {
           <Button
             className="w-full text-gray-200 font-bold"
             size="lg"
+            isDisabled={isLoading}
+            isLoading={isLoading}
+            onClick={handleLogin}
             color="primary"
           >
             Sign In

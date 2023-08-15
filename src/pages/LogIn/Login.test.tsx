@@ -6,6 +6,26 @@ import LogIn, { EyeSlashFilledIcon, EyeFilledIcon } from './index';
 
 jest.mock('@nextui-org/react');
 
+const dispatchMock = jest.fn();
+jest.mock('hooks/redux', () => ({
+  useCustomSelector: () => {
+    return {
+      auth: {
+        accessToken: '',
+        isLoading: false,
+      },
+    };
+  },
+  useCustomDispatch: () => {
+    return dispatchMock;
+  },
+}));
+
+const loginMock = jest.fn();
+jest.mock('redux/slices/auth', () => ({
+  login: loginMock,
+}));
+
 const customRender = (): RenderResult => {
   return render(<LogIn />);
 };
