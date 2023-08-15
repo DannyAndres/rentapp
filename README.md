@@ -31,7 +31,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Test Coverage
+## Test Coverage > 80%
 
 The following image gets updated automatically on every push to this branch, which means the coverage is up to date.
 
