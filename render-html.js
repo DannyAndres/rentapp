@@ -6,7 +6,7 @@ async function run() {
         const browser = await puppeteer.launch({ headless: "new" });
         const page = await browser.newPage();
         await page.goto('file://' + path.join(__dirname, '/coverage/lcov-report/index.html'));
-        await page.screenshot({ path: path.join(__dirname, '/screenshot.png') });
+        await page.screenshot({ path: path.join(__dirname, '/coverage.png') });
         await browser.close();
     } catch (error) {
         console.error(error);
