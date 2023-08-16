@@ -1,6 +1,6 @@
 # Rent App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Before starting the project make sure to create an .env file with the corresponding variables from .env-example
 
 ## Available Scripts
 

@@ -42,7 +42,7 @@ const AppRouter: React.FC = () => {
       <Route path="/" element={<Root />}>
         <Route index element={<Home />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/register" element={<SignUp />} />
       </Route>
     )
   );

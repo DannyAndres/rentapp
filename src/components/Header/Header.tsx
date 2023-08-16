@@ -107,7 +107,7 @@ const Header: React.FC = () => {
           <Button
             data-testid="header-signup-button"
             onClick={() => {
-              navigate('/signup');
+              navigate('/register');
             }}
             color="primary"
             variant="flat"

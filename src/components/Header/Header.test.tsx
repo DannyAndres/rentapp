@@ -90,7 +90,7 @@ describe('Header', () => {
     const signUpButton = getByTestId('header-signup-button');
     fireEvent.click(signUpButton);
 
-    expect(navigateMock).toHaveBeenCalledWith('/signup');
+    expect(navigateMock).toHaveBeenCalledWith('/register');
     expect(navigateMock).toHaveBeenCalledTimes(1);
   });
 

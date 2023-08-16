@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 
 import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
 import { login } from 'redux/slices/auth';
 
 import { Input, Button } from '@nextui-org/react';
+
+interface IFormInput {
+  email: string;
+  password: string;
+}
 
 interface EyeSlashFilledIconProps {
   className: string;
@@ -79,15 +87,44 @@ const LogIn: React.FC = () => {
   } = useCustomSelector((state) => state);
   const dispatch = useCustomDispatch();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
+
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [signUpError, setSignUpError] = useState<string>('');
+
   console.log(accessToken);
 
-  const handleLogin = (): void => {
-    dispatch(
-      login({
-        email: 'eve.holt@reqres.in',
-        password: 'cityslicka',
-      })
-    );
+  const signUpWithEmailAndPassword = async (
+    data: IFormInput
+  ): Promise<void> => {
+    const { password, email } = data;
+    console.log(password, email);
+    try {
+      dispatch(
+        login({
+          email,
+          password,
+        })
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        // Now TypeScript knows that `e` is an `Error`, so you can access `e.message`
+        console.log(err.message);
+        setSignUpError(err.message);
+      }
+      setSubmitDisabled(false);
+      console.log(err);
+    }
+  };
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data): Promise<void> => {
+    setSubmitDisabled(true);
+    setSignUpError('');
+    await signUpWithEmailAndPassword(data);
   };
 
   const [isVisible, setIsVisible] = React.useState(false);
@@ -101,10 +138,34 @@ const LogIn: React.FC = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
-          <Input type="email" label="Email" placeholder="Enter your email" />
+        <form
+          className="space-y-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void handleSubmit(onSubmit)();
+          }}
+        >
+          <Input
+            {...register('email', {
+              required: true,
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: 'invalid email address',
+              },
+            })}
+            type="email"
+            label="Email"
+            placeholder="Enter your email"
+          />
 
           <Input
+            {...register('password', {
+              required: 'You must specify a password',
+              minLength: {
+                value: 8,
+                message: 'Password must have at least 8 characters',
+              },
+            })}
             label="Password"
             placeholder="Enter your password"
             endContent={
@@ -125,13 +186,27 @@ const LogIn: React.FC = () => {
             type={isVisible ? 'text' : 'password'}
             className="w-full"
           />
-
+          {errors.email != null && (
+            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+              {errors.email.message}
+            </p>
+          )}
+          {errors.password != null && (
+            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+              {errors.password.message}
+            </p>
+          )}
+          {signUpError !== '' && (
+            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+              {signUpError}
+            </p>
+          )}
           <Button
             className="w-full text-gray-200 font-bold"
             size="lg"
-            isDisabled={isLoading}
+            isDisabled={isLoading || submitDisabled}
             isLoading={isLoading}
-            onClick={handleLogin}
+            type="submit"
             color="primary"
           >
             Sign In
