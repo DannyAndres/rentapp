@@ -1,0 +1,44 @@
+name: CI
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+  workflow_dispatch:
+permissions:
+  checks: write
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.yarnpkg.com/' # Add Yarn registry URL
+          cache: 'yarn' # Change from npm to yarn
+      - name: Install Yarn dependencies # Change to Yarn
+        run: yarn install
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+          eslint_args: '--config .eslintrc.json'
+          eslint_extensions: ts,tsx
+      - name: Running tests
+        run: yarn run test
+      - name: Build project
+        run: yarn run build
+      # - name: Configure AWS credentials
+      #   if: success() # This step will only run if all previous steps were successful
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_KEY }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+      #     aws-region: us-east-1
+      # - name: Start Amplify Deployment
+      #   if: success()
+      #   run: |
+      #     aws amplify start-job --app-id ${{ secrets.AWS_AMPLIFY_ID }} --branch-name develop --job-type RELEASE
