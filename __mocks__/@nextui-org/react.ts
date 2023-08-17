@@ -9,6 +9,11 @@ interface NextUIProviderProps {
   thumbIcon: UnknownFunction;
   defaultSelected: UnknownFunction;
   'data-testid': string;
+  label?: string;
+  placeholder?: string;
+  value?: string;
+  type?: string;
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
 export const NextUIProvider: React.FC<NextUIProviderProps> = ({ children }) =>
@@ -26,12 +31,18 @@ export const NavbarContent: React.FC<NextUIProviderProps> = ({ children }) =>
 export const NavbarItem: React.FC<NextUIProviderProps> = ({ children }) =>
   React.createElement('div', {}, children);
 
+export const Spinner: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+
+export const Avatar: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+
 export const Button: React.FC<NextUIProviderProps> = ({
   children,
   ...props
 }) => {
   return React.createElement(
-    'div',
+    'button',
     {
       onClick: props.onClick,
       onChange: props.onChange,
@@ -46,11 +57,16 @@ export const Input: React.FC<NextUIProviderProps> = ({
   ...props
 }) => {
   return React.createElement(
-    'div',
+    'input',
     {
       onClick: props.onClick,
       onChange: props.onChange,
+      label: props.label,
+      placeholder: props.placeholder,
       'data-testid': props['data-testid'],
+      value: props.value,
+      type: props.type,
+      ref: props.ref,
     },
     children
   );

@@ -9,13 +9,22 @@ export interface Login {
   email: string;
   password: string;
 }
+
+export interface Signup {
+  email: string;
+  password: string;
+  confirmpassword: string;
+}
+
 export interface AuthState {
   accessToken: string | null;
+  authenticated: boolean;
   isLoading: boolean;
 }
 
 const initialState: AuthState = {
   accessToken: null,
+  authenticated: false,
   isLoading: false,
 };
 
@@ -26,13 +35,17 @@ const authSlice = createSlice({
     setAccessToken: (state, action: PayloadAction<string | null>) => {
       state.accessToken = action.payload;
     },
+    setAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.authenticated = action.payload;
+    },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
   },
 });
 
-export const { setAccessToken, setIsLoading } = authSlice.actions;
+export const { setAccessToken, setAuthenticated, setIsLoading } =
+  authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -43,9 +56,40 @@ export const login =
     try {
       const response: AxiosResponse = await axios.post('/login', data);
       dispatch(setAccessToken(response.data.token));
+      dispatch(setAuthenticated(true));
       return response;
     } catch (error) {
       return error as AxiosError;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+
+export const signup =
+  (data: Signup): Thunk =>
+  async (dispatch): Promise<AxiosResponse | AxiosError> => {
+    dispatch(setIsLoading(true));
+    try {
+      const response: AxiosResponse = await axios.post('/register', data);
+      dispatch(setAccessToken(response.data.token));
+      dispatch(setAuthenticated(true));
+      return response;
+    } catch (error) {
+      return error as AxiosError;
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+
+export const logout =
+  (): Thunk =>
+  async (dispatch): Promise<void> => {
+    dispatch(setIsLoading(true));
+    try {
+      dispatch(setAccessToken(null));
+      dispatch(setAuthenticated(false));
+    } catch (error) {
+      console.log(error);
     } finally {
       dispatch(setIsLoading(false));
     }

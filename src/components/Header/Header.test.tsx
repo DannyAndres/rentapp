@@ -26,6 +26,9 @@ jest.mock('hooks/redux', () => ({
       settings: {
         themeMode: 'light',
       },
+      auth: {
+        authenticated: false,
+      },
     };
   },
   useCustomDispatch: () => {
@@ -90,7 +93,7 @@ describe('Header', () => {
     const signUpButton = getByTestId('header-signup-button');
     fireEvent.click(signUpButton);
 
-    expect(navigateMock).toHaveBeenCalledWith('/signup');
+    expect(navigateMock).toHaveBeenCalledWith('/register');
     expect(navigateMock).toHaveBeenCalledTimes(1);
   });
 

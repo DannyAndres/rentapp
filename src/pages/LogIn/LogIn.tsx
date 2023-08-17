@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
-// import { login } from 'redux/slices/auth';
-// import { setThemeMode } from 'redux/slices/settings';
+import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+
+import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
+import { login } from 'redux/slices/auth';
 
 import { Input, Button } from '@nextui-org/react';
+import { AxiosError } from 'axios';
+
+interface IFormInput {
+  email: string;
+  password: string;
+}
 
 interface EyeSlashFilledIconProps {
   className: string;
@@ -75,26 +83,50 @@ export const EyeFilledIcon: React.FC<EyeFilledIconProps> = (
 );
 
 const LogIn: React.FC = () => {
-  // const {
-  //   auth: { accessToken, isLoading },
-  //   // settings: { themeMode },
-  // } = useCustomSelector((state) => state);
-  // const dispatch = useCustomDispatch();
+  const {
+    auth: { isLoading },
+  } = useCustomSelector((state) => state);
+  const dispatch = useCustomDispatch();
 
-  // console.log(accessToken);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
-  // const handleLogin = (): void => {
-  //   dispatch(
-  //     login({
-  //       email: 'eve.holt@reqres.in',
-  //       password: 'cityslicka',
-  //     })
-  //   );
-  // };
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [signUpError, setSignUpError] = useState<string>('');
 
-  // const handleChangeTheme = (): void => {
-  //   dispatch(setThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
-  // };
+  const signUpWithEmailAndPassword = async (
+    data: IFormInput
+  ): Promise<void> => {
+    const { password, email } = data;
+    try {
+      const data = await dispatch(
+        login({
+          email,
+          password,
+        })
+      );
+      if (data instanceof AxiosError && data.response != null) {
+        setSignUpError(data.response?.data.error);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        // Now TypeScript knows that `e` is an `Error`, so you can access `e.message`
+        setSignUpError(err.message);
+      } else {
+        setSignUpError(JSON.stringify(err));
+      }
+    }
+    setSubmitDisabled(false);
+  };
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data): Promise<void> => {
+    setSubmitDisabled(true);
+    setSignUpError('');
+    await signUpWithEmailAndPassword(data);
+  };
 
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -107,11 +139,37 @@ const LogIn: React.FC = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
-          <Input type="email" label="Email" placeholder="Enter your email" />
+        <form
+          className="space-y-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void handleSubmit(onSubmit)();
+          }}
+        >
+          <Input
+            {...register('email', {
+              required: true,
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: 'invalid email address',
+              },
+            })}
+            type="email"
+            label="Email"
+            data-testid="login-email"
+            placeholder="Enter your email"
+          />
 
           <Input
+            {...register('password', {
+              required: 'You must specify a password',
+              minLength: {
+                value: 8,
+                message: 'Password must have at least 8 characters',
+              },
+            })}
             label="Password"
+            data-testid="login-password"
             placeholder="Enter your password"
             endContent={
               <button
@@ -131,10 +189,28 @@ const LogIn: React.FC = () => {
             type={isVisible ? 'text' : 'password'}
             className="w-full"
           />
-
+          {errors.email != null && (
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
+              {errors.email.message}
+            </p>
+          )}
+          {errors.password != null && (
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
+              {errors.password.message}
+            </p>
+          )}
+          {signUpError !== '' && (
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
+              {signUpError}
+            </p>
+          )}
           <Button
             className="w-full text-gray-200 font-bold"
             size="lg"
+            isDisabled={isLoading || submitDisabled}
+            isLoading={isLoading}
+            type="submit"
+            data-testid="login-submit"
             color="primary"
           >
             Sign In
