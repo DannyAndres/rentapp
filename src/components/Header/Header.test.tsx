@@ -26,6 +26,9 @@ jest.mock('hooks/redux', () => ({
       settings: {
         themeMode: 'light',
       },
+      auth: {
+        authenticated: false,
+      },
     };
   },
   useCustomDispatch: () => {

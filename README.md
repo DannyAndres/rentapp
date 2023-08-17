@@ -1,6 +1,26 @@
 # Rent App
 
+## Enviroment Variables
+
 Before starting the project make sure to create an .env file with the corresponding variables from .env-example
+
+## Reqres Users
+
+In order to use the mock authentication you should use the following list of users provided by reqres.in
+https://reqres.in/
+
+### Login
+
+- Username: eve.holt@reqres.in
+- Password: cityslicka
+
+### Register
+
+- Username: eve.holt@reqres.in
+- Password: any password
+- Confirm Password: same password as before
+
+important: any other email will make a failed login or register, this is up to reqres to change.
 
 ## Available Scripts
 

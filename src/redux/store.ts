@@ -9,7 +9,7 @@ import settingsReducer from './slices/settings';
 const persistAuthConfig = {
   key: 'auth',
   storage,
-  whitelist: ['accessToken'],
+  whitelist: ['accessToken', 'authenticated'],
 };
 
 const persistSettingsConfig = {

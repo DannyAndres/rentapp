@@ -8,12 +8,14 @@ import {
   NavbarItem,
   Button,
   Switch,
+  Avatar,
 } from '@nextui-org/react';
 
 import Logo from 'assets/logo.png';
 
 import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
 import { setThemeMode } from 'redux/slices/settings';
+import { logout } from 'redux/slices/auth';
 
 interface MoonIconProps {
   className: string;
@@ -66,11 +68,16 @@ const Header: React.FC = () => {
 
   const {
     settings: { themeMode },
+    auth: { authenticated },
   } = useCustomSelector((state) => state);
   const dispatch = useCustomDispatch();
 
   const handleChangeTheme = (): void => {
     dispatch(setThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
+  };
+
+  const logoutSubmit = (): void => {
+    dispatch(logout());
   };
 
   return (
@@ -91,30 +98,53 @@ const Header: React.FC = () => {
         </button>
       </NavbarBrand>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Button
-            data-testid="header-login-button"
-            onClick={() => {
-              navigate('/login');
-            }}
-            color="primary"
-            variant="light"
-          >
-            Login
-          </Button>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            data-testid="header-signup-button"
-            onClick={() => {
-              navigate('/register');
-            }}
-            color="primary"
-            variant="flat"
-          >
-            Sign Up
-          </Button>
-        </NavbarItem>
+        {!authenticated && (
+          <NavbarItem className="hidden lg:flex">
+            <Button
+              data-testid="header-login-button"
+              onClick={() => {
+                navigate('/login');
+              }}
+              color="primary"
+              variant="light"
+            >
+              Login
+            </Button>
+          </NavbarItem>
+        )}
+        {!authenticated && (
+          <NavbarItem>
+            <Button
+              data-testid="header-signup-button"
+              onClick={() => {
+                navigate('/register');
+              }}
+              color="primary"
+              variant="flat"
+            >
+              Sign Up
+            </Button>
+          </NavbarItem>
+        )}
+        {authenticated && (
+          <NavbarItem>
+            <Avatar name="Eve" />
+          </NavbarItem>
+        )}
+        {authenticated && (
+          <NavbarItem>
+            <Button
+              data-testid="header-logout-button"
+              onClick={() => {
+                logoutSubmit();
+              }}
+              color="primary"
+              variant="flat"
+            >
+              Log out
+            </Button>
+          </NavbarItem>
+        )}
         <NavbarItem>
           <Switch
             size="lg"

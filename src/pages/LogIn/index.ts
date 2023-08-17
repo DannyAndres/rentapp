@@ -1,1 +1,1 @@
-export { default, EyeSlashFilledIcon, EyeFilledIcon } from './LogIn';
+export { default } from './LogIn';

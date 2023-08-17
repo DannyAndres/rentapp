@@ -1,25 +1,16 @@
 import React from 'react';
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  Outlet,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 
 import Header from 'components/Header';
 
-import Home from 'pages/Home';
-import LogIn from 'pages/LogIn';
-import SignUp from 'pages/SignUp';
-
 import { useCustomSelector } from 'hooks/redux';
+
+import routes from './Routes';
 
 const Root: React.FC = () => {
   const {
     settings: { themeMode },
   } = useCustomSelector((state) => state);
-
   return (
     <main
       className={`${
@@ -37,15 +28,7 @@ const Root: React.FC = () => {
 };
 
 const AppRouter: React.FC = () => {
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<Root />}>
-        <Route index element={<Home />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/register" element={<SignUp />} />
-      </Route>
-    )
-  );
+  const router = createBrowserRouter(routes(<Root />));
 
   return <RouterProvider router={router} />;
 };

@@ -7,6 +7,7 @@ import { useCustomSelector, useCustomDispatch } from 'hooks/redux';
 import { login } from 'redux/slices/auth';
 
 import { Input, Button } from '@nextui-org/react';
+import { AxiosError } from 'axios';
 
 interface IFormInput {
   email: string;
@@ -83,7 +84,7 @@ export const EyeFilledIcon: React.FC<EyeFilledIconProps> = (
 
 const LogIn: React.FC = () => {
   const {
-    auth: { accessToken, isLoading },
+    auth: { isLoading },
   } = useCustomSelector((state) => state);
   const dispatch = useCustomDispatch();
 
@@ -96,29 +97,29 @@ const LogIn: React.FC = () => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const [signUpError, setSignUpError] = useState<string>('');
 
-  console.log(accessToken);
-
   const signUpWithEmailAndPassword = async (
     data: IFormInput
   ): Promise<void> => {
     const { password, email } = data;
-    console.log(password, email);
     try {
-      dispatch(
+      const data = await dispatch(
         login({
           email,
           password,
         })
       );
+      if (data instanceof AxiosError && data.response != null) {
+        setSignUpError(data.response?.data.error);
+      }
     } catch (err) {
       if (err instanceof Error) {
         // Now TypeScript knows that `e` is an `Error`, so you can access `e.message`
-        console.log(err.message);
         setSignUpError(err.message);
+      } else {
+        setSignUpError(JSON.stringify(err));
       }
-      setSubmitDisabled(false);
-      console.log(err);
     }
+    setSubmitDisabled(false);
   };
 
   const onSubmit: SubmitHandler<IFormInput> = async (data): Promise<void> => {
@@ -155,6 +156,7 @@ const LogIn: React.FC = () => {
             })}
             type="email"
             label="Email"
+            data-testid="login-email"
             placeholder="Enter your email"
           />
 
@@ -167,6 +169,7 @@ const LogIn: React.FC = () => {
               },
             })}
             label="Password"
+            data-testid="login-password"
             placeholder="Enter your password"
             endContent={
               <button
@@ -187,17 +190,17 @@ const LogIn: React.FC = () => {
             className="w-full"
           />
           {errors.email != null && (
-            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
               {errors.email.message}
             </p>
           )}
           {errors.password != null && (
-            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
               {errors.password.message}
             </p>
           )}
           {signUpError !== '' && (
-            <p className="bg-red-100 text-red-900 mb-2 px-2 py-4 text-center rounded">
+            <p className="bg-red-700 text-red-200 mb-2 px-2 py-4 text-center rounded-large">
               {signUpError}
             </p>
           )}
@@ -207,6 +210,7 @@ const LogIn: React.FC = () => {
             isDisabled={isLoading || submitDisabled}
             isLoading={isLoading}
             type="submit"
+            data-testid="login-submit"
             color="primary"
           >
             Sign In
