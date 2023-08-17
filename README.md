@@ -22,6 +22,8 @@ https://reqres.in/
 
 important: any other email will make a failed login or register, this is up to reqres to change.
 
+- Avatar profile image works as a button to go to auth home
+
 ## Available Scripts
 
 In the project directory, you can run:

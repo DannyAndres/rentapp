@@ -37,6 +37,25 @@ export const Spinner: React.FC<NextUIProviderProps> = ({ children }) =>
 export const Avatar: React.FC<NextUIProviderProps> = ({ children }) =>
   React.createElement('div', {}, children);
 
+export const Card: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const CardHeader: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const CardBody: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const CardFooter: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const Divider: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const Link: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const Image: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const Skeleton: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+export const Chip: React.FC<NextUIProviderProps> = ({ children }) =>
+  React.createElement('div', {}, children);
+
 export const Button: React.FC<NextUIProviderProps> = ({
   children,
   ...props
