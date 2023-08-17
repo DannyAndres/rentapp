@@ -8,6 +8,9 @@ import Welcome from 'pages/Welcome';
 import Home from 'pages/Home';
 import LogIn from 'pages/LogIn';
 import SignUp from 'pages/SignUp';
+import Characters from 'pages/Characters';
+import Locations from 'pages/Locations';
+import Episodes from 'pages/Episodes';
 
 interface MiddlewareConfig {
   access: string;
@@ -94,6 +97,42 @@ const routes = (root: React.ReactElement): Route[] => {
               }}
             >
               <Home />
+            </MiddlewareRoute>
+          ),
+        },
+        {
+          path: '/character',
+          element: (
+            <MiddlewareRoute
+              config={{
+                access: 'auth',
+              }}
+            >
+              <Characters />
+            </MiddlewareRoute>
+          ),
+        },
+        {
+          path: '/locations',
+          element: (
+            <MiddlewareRoute
+              config={{
+                access: 'auth',
+              }}
+            >
+              <Locations />
+            </MiddlewareRoute>
+          ),
+        },
+        {
+          path: '/episodes',
+          element: (
+            <MiddlewareRoute
+              config={{
+                access: 'auth',
+              }}
+            >
+              <Episodes />
             </MiddlewareRoute>
           ),
         },

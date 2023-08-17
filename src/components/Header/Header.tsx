@@ -128,7 +128,13 @@ const Header: React.FC = () => {
         )}
         {authenticated && (
           <NavbarItem>
-            <Avatar name="Eve" />
+            <Avatar
+              onClick={() => {
+                navigate('/home');
+              }}
+              className="cursor-pointer"
+              name="Eve"
+            />
           </NavbarItem>
         )}
         {authenticated && (
@@ -152,13 +158,8 @@ const Header: React.FC = () => {
             data-testid="header-darkmode-button"
             defaultSelected={themeMode === 'dark'}
             onChange={handleChangeTheme}
-            thumbIcon={({ isSelected, className }) =>
-              isSelected ? (
-                <SunIcon className={className} />
-              ) : (
-                <MoonIcon className={className} />
-              )
-            }
+            startContent={<SunIcon className="block" />}
+            endContent={<MoonIcon className="block" />}
           >
             <SunIcon className="hidden" />
             <MoonIcon className="hidden" />

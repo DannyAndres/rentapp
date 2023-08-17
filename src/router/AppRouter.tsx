@@ -19,7 +19,7 @@ const Root: React.FC = () => {
     >
       <Header />
       <div className="w-full flex justify-center items-start">
-        <div className="w-full max-w-[1024px]">
+        <div className="w-full max-w-[90vw] md:max-w-[1024px]">
           <Outlet />
         </div>
       </div>
